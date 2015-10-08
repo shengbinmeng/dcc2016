@@ -1,0 +1,12 @@
+# OS X Finder files
+.DS_Store
+
+# TeX system files
+*.aux
+*.log
+*.pdf
+*.gz
+*.lof
+*.lot
+*.bbl
+*.blg
