@@ -269,15 +269,14 @@ The necessary conditions for a scalar quantizer to achieve optimum R-D performan
 \end{equation}
 (for $k \le 0$ the result and the derivation are similar, due to the symmetry).
 
-Based on (\ref{equ:formula-OptQuant}), we now deduce the necessary constraint on $z$ and $f$ for DZ+UTQ/NURQ design to achieve optimum R-D performance.
-Note that we assume nothing special about the source, except that it's zero-mean and the PDF $p(x)$ is monotonically non-increasing in positive axis, which is true for all source distributions of interest.
+Based on (\ref{equ:formula-OptQuant}), we now deduce the necessary constraint on $z$ and $f$ for DZ+UTQ/NURQ design to achieve optimum R-D performance. Note that we assume nothing special about the source, except that it's zero-mean and the PDF $p(x)$ is monotonically non-increasing in positive axis, which is true for all source distributions of interest.
 
 First of all, for the reconstruction value $R_k$ to be located within the quantization interval $I_k$ (the prerequisite of being located at the \emph{centroid}), according to (\ref{equ:interval}) and (\ref{equ:DZ+UTQ/NURQ}), the preliminary constraint on $z$ and $f$ can be obtained:
 \begin{equation}\label{equ:formula-PreConstraint}
 	 T_k \le R_k < T_{k+1} \Rightarrow (k-1+z)s \le (k+f)s < (k+z)s \Rightarrow 0 < z - f \le1.
 \end{equation}
 
-Next, we refine the constraint using (\ref{equ:formula-OptQuant}). Considering that $p(x) > 0$, and $p(x)$ is monotonically non-increasing in positive axis, for $0 < a < b$, it can be proved that (a proof is provided in the Appendix):
+Next, we further refine this constraint using (\ref{equ:formula-OptQuant}). Considering that $p(x) > 0$, and $p(x)$ is monotonically non-increasing in positive axis, for $0 < a < b$, it can be proved that (a proof is provided in the Appendix):
 \begin{equation}\label{equ:formula-Inequity}
 	\int_a^b xp(x)dx \le \frac{a+b}{2} \int_a^b p(x)dx.
 \end{equation}
@@ -289,65 +288,63 @@ By integrating (\ref{equ:formula-OptQuant}) and (\ref{equ:formula-Inequity1}), i
 \begin{equation}\label{equ:formula-Inequity2}
 	{R_k}^* \le (k+z-\frac{1}{2})s, \quad k \ge 1.
 \end{equation}
-From (\ref{equ:DZ+UTQ/NURQ}) and (\ref{equ:formula-Inequity2}), we know that the optimum quantizer design requires $(k+f)s \le (k+z-\frac{1}{2})s$, implying $z-f \ge \frac{1}{2}$. Thus the preliminary constraint (\ref{equ:formula-PreConstraint}) can be refined as:
+From (\ref{equ:DZ+UTQ/NURQ}) and (\ref{equ:formula-Inequity2}), we know that the optimum quantizer design requires $(k+f)s \le (k+z-\frac{1}{2})s$, implying $z-f \ge \frac{1}{2}$. Thus the preliminary constraint (\ref{equ:formula-PreConstraint}) can be refined to $\frac{1}{2} \le z-f \le 1$, also written as:
 \begin{equation}\label{equ:formula-RefConstraint}
-	\frac{1}{2} \le z - f \le 1,
+	z = f+d, \quad \frac{1}{2} \le d \le 1,
 \end{equation}
-which is the the necessary constraint for DZ+UTQ/NURQ design to be optimum.
+which is the necessary constraint for DZ+UTQ/NURQ design to be optimum.
+
+Derived without a specific $p(x)$(PDF) formula, this design principle is universal to all commonly-used distributions and should apply to various sources. In \cite{Sullivan_VCIP2005}, the DZ+UTQ/NURQ quantizer's performance for Laplacian and Gaussian source is theoretically analyzed, and the results about the optimum values of quantizer parameters are completely consistent with this principle. As further validation, we present simulation experiments for Cauchy distribution, which still lacks thorough analysis in the literature. For Cauchy distribution with $\mu = 0.2$ and $0.8$, R-D performance comparison of different $z-f$ values for DZ+UTQ/NURQ is exhibited in Fig. \ref{fig:RD_different_patterns}, which clearly demonstrates the superiority of those values satisfying (\ref{equ:formula-RefConstraint}).
 
 \begin{figure*}
 \begin{center}
 \begin{tabular}{cc}
-\includegraphics[width = 0.5\linewidth]{Figures/section4/RD_Cauchy_mu=0_5_z=p+0_67} &
-\includegraphics[width = 0.5\linewidth]{Figures/section4/RD_Cauchy_mu=0_5_z=p+0_83} \\
-{\small (a) $z=f+2/3$} & {\small (b) $z=f+5/6$} 
-\end{tabular}
-\end{center}
-\vspace{-20pt}
-\caption{\label{fig:RD_same_pattern}
-R-D performance comparison of different quantizer designs conforming to the same DZ+UTQ/NURQ linear pattern satisfying (\ref{equ:formula-LinearConstraint}) for Cauchy $\mu=0.5$.}
-\end{figure*}
-
-\begin{figure*}
-\begin{center}
-\begin{tabular}{cc}
-\includegraphics[width = 0.5\linewidth]{Figures/section4/RD_Cauchy_mu=0_2_linear_patterns} &
-\includegraphics[width = 0.5\linewidth]{Figures/section4/RD_Cauchy_mu=0_8_linear_patterns} \\
+\includegraphics[width = 0.45\linewidth]{Figures/section4/RD_Cauchy_mu=0_2_linear_patterns} &
+\includegraphics[width = 0.45\linewidth]{Figures/section4/RD_Cauchy_mu=0_8_linear_patterns} \\
 {\small (a) Cauchy $\mu=0.2$} & {\small (b) Cauchy $\mu=0.8$}
 \end{tabular}
 \end{center}
 \vspace{-20pt}
 \caption{\label{fig:RD_different_patterns}
-R-D performance comparison of different DZ+UTQ/NURQ linear patterns, which reflects the superiority of the patterns satisfying (\ref{equ:formula-LinearConstraint}).}
-\end{figure*} 
+R-D performance comparison of different $z-f$ values for DZ+UTQ/NURQ.}
+\end{figure*}
 
-Particularly, when the source distribution types are further specified as some zero-mean heavy-tailed distribution \footnote{http://en.wikipedia.org/wiki/Heavy-tailed\_distribution}, e.g. Cauchy distribution, the refined constraint (\ref{equ:formula-RefConstraint}) can be more accurately described. Consider the quantization interval $I_k$ ($k > 0$), where the reconstruction value $R_k$ divides $I_k$ into two parts: $\overline{T_k R_k}$ and $\overline{R_k T_{k+1}}$. Since Cauchy distribution provides a useful model of broad-tailed stochastic phenomena \cite{Farvardin_TIT1984}, in quantization intervals other than dead-zone ($\forall I_k, \; k \ne 0$), the PDF of Cauchy distribution can be precisely approximated as a straight line. Thus, when the slope of PDF in $I_k$ is fixed, according to the necessary condition (\ref{equ:formula-OptQuant}), to keep $R_k$ the centroid of PDF in $I_k$, the distance ratio of $\overline{T_k R_k} / \overline{R_k T_{k+1}}$ should remain constant. To make it clear, efficient DZ+UTQ/NURQ design requires two different patterns $z_1, f_1$ and $z_2, f_2$ to satisfy:
+Guided by this universal principle, when selecting parameters of DZ+UTQ/NURQ for any source, one should first of all ensure that $z-f=d$ satisfies (\ref{equ:formula-RefConstraint}). Then for some particular sources, we continue to show that, the value $z-f$ can actually be used as a precise classifier for the quantizer performance.
+
+Consider the quantization interval $I_k$ ($k \ge 1$), where the reconstruction value $R_k$ divides it into two parts: $\overline{T_k R_k}$ and $\overline{R_k T_{k+1}}$. For some ``broad-tailed" or ``fat-tailed"$^1$\footnote{$^1$ https://en.wikipedia.org/wiki/Fat-tailed\_distribution} distributions, e.g., some members of the Cauchy family \cite{Farvardin_TIT1984}, in quantization intervals other than the dead-zone, the PDF can be precisely approximated with a straight line. If this is true, then whether $R_k$ is at the centroid of PDF in $I_k$, or equivalently, whether the quantizer has optimum performance, would be determined exclusively by the ratio $\overline{T_k R_k} / \overline{R_k T_{k+1}}$, which therefore can serve as a measurement for the performance of the quantizer. In other words, if two DZ+UTQ/NURQ designs ($z_1, f_1$) and ($z_2, f_2$) result in the same value of $\overline{T_k R_k} / \overline{R_k T_{k+1}}$, their R-D performance would also be the same. According to (\ref{equ:DZ+UTQ/NURQ}), the value of $\overline{T_k R_k} / \overline{R_k T_{k+1}}$ being the same implies that:
 \begin{equation}\label{equ:formula-ratio}
 \frac{(k+f_1)-(k-1+z_1)}{(k+z_1)-(k+f_1)} = \frac{(k+f_2)-(k-1+z_2)}{(k+z_2)-(k+f_2)},
 \end{equation}
-which means $z_1 - z_2 = f_1 - f_2$, indicating $z$ and $f$ should be linear correlate. Therefore, based on the refined constraint (\ref{equ:formula-RefConstraint}), a linear constraint on $z$ and $f$ is derived:
-\begin{equation}\label{equ:formula-LinearConstraint}
-	z = f+c, \quad \frac{1}{2} \le c \le 1, 
-\end{equation}
-where $c$ is constant real number.
+which can be reduced to $z_1 - f_1 = z_2 - f_2$. Reasoning back, we can obtain that: the performance of the quantizer design ($z_1, f_1$) is the same with the quantizer design ($z_2, f_2$), as long as $z_1 - f_1 = z_2 - f_2$, regardless of the specific values of the parameters.
 
-Derived from the necessary condition (\ref{equ:formula-OptQuant}), in actual bitrate ($0-1.5$ bits/sample), the linear constraint (\ref{equ:formula-LinearConstraint}) is an efficient principle to evaluate the R-D performance of different DZ+UTQ/NURQ designs, which can be reflected via two groups of simulation experiments on Cauchy distribution. The first group of experiments are designed to show that the linear constraint is a precise performance classifier of DZ+UTQ/NURQ. Related results for $\mu = 0.5$ are exhibited in Fig. \ref{fig:RD_same_pattern}. From the R-D performance comparison of different DZ+UTQ/NURQ designs, it is observed that, under each linear pattern, all the PSNR-R curves are exactly overlapped with each other, indicating the identical R-D performance of different DZ+UTQ/NURQ designs conforming to the same linear pattern satisfying (\ref{equ:formula-LinearConstraint}). The second group of experiments are designed to show that the linear constraint is also an accurate indicator of superior R-D performance. Related results for $\mu = 0.2$ and $0.8$ are exhibited in Fig. \ref{fig:RD_different_patterns}. From the R-D performance comparison of different linear patterns, it is obvious that only the linear patterns satisfying (\ref{equ:formula-LinearConstraint}) can achieve desirable R-D performance.
+Although not as universal as the previous one, this principle still applies to a large class of sources with ``broad-tailed" distributions. Validation for Cauchy distribution with $\mu = 0.5$ is provided in Fig. \ref{fig:RD_same_pattern}, where R-D performance comparison of different DZ+UTQ/NURQ designs with the identical $z-f$ value is shown. It is observed that, under each $z-f$ value, all the PSNR-R curves are overlapped, indicating the same R-D performance.
 
-It should be noted that, as an efficient DZ+UTQ/NURQ design principle, the linear constraint (\ref{equ:formula-LinearConstraint}) is not only applicable for Cauchy distribution but also for a big class of zero-mean heavy-tailed distributions (requiring monotonic PDF in positive axis).
+\begin{figure*}
+\begin{center}
+\begin{tabular}{cc}
+\includegraphics[width = 0.45\linewidth]{Figures/section4/RD_Cauchy_mu=0_5_z=p+0_67} &
+\includegraphics[width = 0.45\linewidth]{Figures/section4/RD_Cauchy_mu=0_5_z=p+0_83} \\
+{\small (a) $z=f+2/3$} & {\small (b) $z=f+5/6$}
+\end{tabular}
+\end{center}
+\vspace{-20pt}
+\caption{\label{fig:RD_same_pattern}
+R-D performance comparison of different quantizer designs with identical $z-f$ value for Cauchy $\mu=0.5$.}
+\end{figure*}
 
-In sum, the constraints (\ref{equ:formula-PreConstraint}), (\ref{equ:formula-RefConstraint}) and (\ref{equ:formula-LinearConstraint}) provide a convenient way to simplify the R-D performance analysis of various different source distributions. Benefiting from these principles, the reason why the DZ+UTQ/NURQ designs applied in video/image coding standards (e.g. in H.264/AVC, $z$ is set to $2/3$ in intra coding and $5/6$ in inter coding, $f$ is set to $0$ \cite{Sullivan_VCIP2005}) are effective can now be theoretically explained.
+The two principles provide a convenient way to simplify R-D performance analysis of various source distributions and guide the parameter selection for practical quantizers. Benefiting from them, the reason why the DZ+UTQ/NURQ designs applied in video/image coding standards (e.g. in H.264/AVC, $z$ is set to $2/3$ in intra coding and $5/6$ in inter coding, $f$ is set to $0$ \cite{Sullivan_VCIP2005}) are effective can now be clearly seen.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this paper, universal property and principles that apply to various source distributions are revealed and validated. First, for any source distribution that can be expressed as the product of a Scaling Factor (SF) and the remaining part, SF does not affect the derivative of its R-D function. Second, for the DZ+UTQ/NURQ scheme to achieve optimum R-D performance, its parameters should satisfy the necessary constraint of $\frac{1}{2} \le z - f \le 1$, and $z - f$ is also a precise performance classifier for some source of heavy-tailed distribution. These results can provide insights and assistance in R-D modeling and quantizer design for real coding applications, where the source distribution may be complex and uncertain.
+In this paper, universal property and principles that apply to various source distributions are revealed and validated. First, for any source distribution that can be expressed as the product of a Scaling Factor (SF) and the remaining part, SF does not affect the derivative of its R-D function. Second, for the DZ+UTQ/NURQ scheme to achieve optimum R-D performance, its parameters should satisfy the necessary constraint of $\frac{1}{2} \le z - f \le 1$, and $z - f$ is also a precise performance classifier for sources of certain distributions. These results can provide insights and assistance in R-D modeling and quantizer design for real coding applications, where the source distribution may be complex and uncertain.
 
 \section*{Appendix}
 \label{sec:appendix}
 
-In this appendix, we prove $\int_a^b xp(x)dx \le \frac{a+b}{2} \int_a^b p(x)dx$ when $p(x)$ is monotonically non-increasing in positive axis, $p(x) > 0$, and $0 < a < b$.
+In this appendix, we prove $\int_a^b xp(x)dx \le \frac{a+b}{2} \int_a^b p(x)dx$, given that $0 < a < b$, $p(x) > 0$, and $p(x)$ is monotonically non-increasing in positive axis.
 
-Let $F(t) = \int_a^t xp(x)dx - \frac{a+t}{2} \int_a^t p(x)dx, t \in [a, b]$. Then $F^{\prime}(t) = tp(t) - [\frac{1}{2}\int_a^t p(x)dx + \frac{a+t}{2}p(t)] = \frac{t-a}{2}p(t) - \frac{1}{2}\int_a^t p(x)dx = \frac{1}{2}\int_a^t p(t)-p(x)dx $. Since $p(x)$ is monotonically non-increasing, for $x \in [a, t]$ we have $p(t) \le p(x)$, which implies $F^{\prime}(t) \le 0$. Therefore $F(t)$ is also monotonically non-increasing. Then from $b > a$, we obtain $F(b) \le F(a)$, which is $\int_a^b xp(x)dx - \frac{a+b}{2} \int_a^b p(x)dx \le 0$, thus the result.
+Let $F(t) = \int_a^t xp(x)dx - \frac{a+t}{2} \int_a^t p(x)dx, t \in [a, b]$. Then $F^{\prime}(t) = tp(t) - [\frac{1}{2}\int_a^t p(x)dx + \frac{a+t}{2}p(t)] = \frac{t-a}{2}p(t) - \frac{1}{2}\int_a^t p(x)dx = \frac{1}{2}\int_a^t p(t)-p(x)dx $. Since $p(x)$ is monotonically non-increasing, for $x \in [a, t]$ we have $p(t) \le p(x)$, which implies $F^{\prime}(t) \le 0$. Therefore $F(t)$ is also monotonically non-increasing. Then with $b > a$, we obtain $F(b) \le F(a)$, which is $\int_a^b xp(x)dx - \frac{a+b}{2} \int_a^b p(x)dx \le 0$, i.e., $\int_a^b xp(x)dx \le \frac{a+b}{2} \int_a^b p(x)dx$. $\square$
 
 % It's prettier with more space.
 \iffalse
