@@ -43,36 +43,34 @@ Peking University, Beijing, 100086, China\\
 \thispagestyle{empty}
 
 \begin{abstract}
-This paper studies the complex Rate-Distortion (R-D) analysis problem from a universal perspective. First, it is revealed that, for any source distribution that can be expressed as the product of a Scaling Factor (SF) and the remaining part, SF does not affect the derivative of its R-D function. This universal property can properly reduce the complexity of the R-D modeling problem. Second, universal principles for the widely-used quantization scheme to achieve optimum R-D performance are deduced regardless of the source distribution form, which can be used to conveniently guide the parameter selection of practical quantizer design. Simulation experiments for Cauchy distribution, which still lacks thorough analysis in the literature, are present to validate the universal property and principles.
+This paper studies the complex rate-distortion (R-D) analysis problem from a universal perspective. First, it is revealed that, for any source distribution composed of a scaling factor (SF) and the remaining part, SF does not affect the derivative of its R-D function (with PSNR as distortion criteria). This universal property can properly reduce the complexity of R-D modeling for real sources. Second, universal principles for the widely-used quantization scheme to achieve optimum R-D performance are deduced regardless of the source distribution form, which can be used to conveniently guide the practical quantizer design. Simulation experiments for Cauchy distribution, which still lacks thorough analysis in the literature, are present to validate the universal property and principles.
 \end{abstract}
 
 \section{Introduction}
 
 \let\thefootnote\relax\footnotetext{* is the corresponding author.}
 
-The lossy compression of digital video/image data finally leads to transform-based coding of residuals obtained from intra or inter-frame prediction \cite{Sullivan_IEEE2005}. The coefficients of the transform (generally DCT or alike), are processed through quantization and entropy coding, from which bits are produced and distortion is introduced. The rate of bits coming from the entropy coder and the distortion caused by quantization are two aspects that measure the efficiency of the compression. In this scenario, the transform coefficients are referred to as source signal, and the whole process is called source coding.
+As one of the fundamental issues of source coding, rate-distortion (R-D) analysis has attracted considerable research attentions. In general, R-D analysis focuses on studying the essential relationship between rate and distortion of the source under applicable quantization technologies. A source is typically characterized by its probability distribution, while the transform-based entropy-constrained scalar quantization is the most extensively applied quantization technology \cite{Hang_TCSVT1997}. Therefore, R-D analysis is usually represented by studying the R-D relationship and R-D performance of applying certain scalar quantizer to a given source distribution.
 
-As one of the fundamental issues of source coding, rate-distortion (R-D) analysis has attracted considerable research attentions. In general, R-D analysis focuses on studying the essential relationship between rate and distortion of the source signal under applicable quantization technologies. A source signal is typically characterized by its probability distribution, while the transform-based entropy-constrained scalar quantization is the most extensively applied quantization technology \cite{Hang_TCSVT1997}. Therefore, R-D analysis is usually represented by studying the R-D relationship and R-D performance of applying certain scalar quantizer to a given source distribution.
+On one hand, to evaluate the best attainable R-D performance, different types of scalar quantizers were analyzed and compared \cite{Sullivan_TIT1996}, among which the dead-zone plus uniform threshold quantizer (DZ+UTQ) with nearly-uniform reconstruction quantizer (NURQ) is recommended and now applied in all major international coding standards \cite{Sullivan_VCIP2005}. On the other hand, regarding to which distribution is most appropriate to statistically characterize the source in real compression applications, no consensus is ever reached. Take the DCT coefficients encountered in image/video coding for example. Some researchers prefer to describe that with Gaussian, Laplacian, or their parametric family generalized Gaussian distribution (GGD) \cite{Pratt_Wiley1978,Smooth_SPIE1996,Sun_TCSVT2009}, while others claim that Cauchy distribution is a better choice \cite{Kamaci_TCSVT2005}\cite{Rod_TCSVT2010}. Proposals for more sophisticated distributions such as mixed Gaussian \cite{Eude_ICASSP1994}, Bernoulli GGD \cite{Fraysse_TIT2009}, multiple Laplacian \cite{Lee_TCSVT2014} are also reported. Among these distributions, R-D analysis for the Gaussian family has been thoroughly conducted. For instance, performance of the DZ+UTQ/NURQ scheme is clearly shown for Laplacian and Gaussian in \cite{Sullivan_VCIP2005}. However, for Cauchy and other complex distributions, existing achievements are still quite limited and mostly based on empirical approach which may lack accuracy and robustness.
 
-On one hand, to evaluate the best attainable R-D performance, different types of scalar quantizers were analyzed and compared \cite{Sullivan_TIT1996}, among which the dead-zone plus uniform threshold quantizer (DZ+UTQ) with nearly-uniform reconstruction quantizer (NURQ) is recommended and now applied in all major international coding standards \cite{Sullivan_VCIP2005}. On the other hand, regarding to which distribution is most appropriate to statistically characterize the real source signal (DCT coefficients), no consensus is ever reached. Some researchers prefer Gaussian, Laplacian, or their parametric family Generalized Gaussian distribution (GGD) \cite{Pratt_Wiley1978,Smooth_SPIE1996,Sun_TCSVT2009}, while others claim that Cauchy distribution is a better choice \cite{Kamaci_TCSVT2005}\cite{Rod_TCSVT2010}. Proposals for more sophisticated distributions such as mixed Gaussian \cite{Eude_ICASSP1994}, Bernoulli GGD \cite{Fraysse_TIT2009}, multiple Laplacian \cite{Lee_TCSVT2014} are also reported. Among these distributions, R-D analysis for the Gaussian family has been thoroughly conducted. For instance, performance of the DZ+UTQ/NURQ quantizer is clearly shown for Laplacian and Gaussian in \cite{Sullivan_VCIP2005}. However, for Cauchy and other complex distributions, existing conclusions are still quite limited and mostly based on empirical approach which may lack accuracy and robustness.
+In this paper, instead of focusing on the R-D analysis of a specific source distribution, we aim to investigate the common rules existing for a variety of different source distributions. The main contribution of this study is to provide insights and assistance in R-D modeling and quantizer design for real coding applications, where the source distribution may be complex and uncertain. First, it is revealed that, for any source distribution composed of a scaling factor (SF) and the remaining part, SF does not affect the derivative of its R-D function (with PSNR as distortion criteria). This universal property can properly reduce the complexity of R-D modeling for real sources. Second, universal principles for the widely-used DZ+UTQ/NURQ scheme to achieve optimum R-D performance are deduced regardless of the source distribution form, which can be used to conveniently guide the practical quantizer design. The property and principles are validated with the Cauchy distribution, which still lacks thorough analysis in the literature,and are also consistent with existing conclusions of other distributions.
 
-In this paper, instead of focusing on the R-D analysis of a specific source distribution, we try to reveal the common rules existing for a variety of different source distributions. The main contribution of this study is to provide insights and assistance in R-D modeling and quantizer design for real coding applications, where the source distribution may be complex and uncertain. First, it is revealed that, for any source distribution that can be expressed as the product of a Scaling Factor (SF) and the remaining part, SF does not affect the derivative of its R-D function. This universal property can properly reduce the complexity of the R-D modeling problem. Second, universal principles for the widely-used DZ+UTQ/NURQ scheme to achieve optimum R-D performance are deduced regardless of the source distribution form, which can be used to conveniently guide the parameter selection of practical quantizer design. The property and principles are validated with the Cauchy distribution, and are also consistent with existing conclusions of other distributions.
-
-The rest of this paper is organized as follows. In Section \ref{sec:background}, the background knowledge of our analysis is briefly introduced. On this basis, Section \ref{sec:property} and Section \ref{sec:principle} respectively discusses the universal R-D property and quantizer design principles that apply to various source distributions, with both mathematical derivation and simulated validation. Finally, concluding remarks are given in Section \ref{sec:conclusion}.
+The rest of this paper is organized as follows. In Section \ref{sec:background}, the background knowledge of our analysis is briefly introduced. On this basis, Section \ref{sec:property} and Section \ref{sec:principle} respectively discusses the universal R-D property and quantizer design principles that apply to various source distributions, with both mathematical derivation and simulation validation. Finally, concluding remarks are given in Section \ref{sec:conclusion}.
 
 \section{Background Knowledge}
 \label{sec:background}
 
 \subsection{Scaling Factor of Source Distributions}
 
-Let $p(x)$ be the Probabilistic Density Function (PDF) of an arbitrarily given source distribution, and $c>0$ is one of its parameters. If there exists a function $q(x)$ irrelevant to $c$ satisfying:
+Let $p(x)$ be the probabilistic density function (PDF) of a given source, and $c>0$ is one of its parameters. If there exists a function $q(x)$ irrelevant to $c$ satisfying:
 \begin{equation}
 \label{equ:SF}
 p(x)=\frac{1}{c} q(\frac{x}{c}),\qquad \forall x \in \mathbf{R},
 \end{equation}
-the parameter $c$ is defined as a \emph{Scaling Factor} (SF) of $p(x)$, and $q(x)$ is defined as the \emph{Remaining Part} (RP) irrelevant to $c$.
+then the parameter $c$ is defined as a \emph{Scaling Factor} (SF) of $p(x)$, and $q(x)$ is defined as the \emph{Remaining Part} (RP) irrelevant to $c$.
 
-According to (\ref{equ:SF}), typical zero-mean source distributions such as GGD, Generalized Cauchy Distribution (GCD) and Cauchy are expressed in terms of SF and RP in Table \ref{tab:SF}. Note that, GGD becomes Laplacian and Gaussian when $\alpha=1.0$ and $\alpha=2.0$, and Cauchy is a special case of GCD with $k=2.0$.
+According to (\ref{equ:SF}), typical zero-mean distributions such as GGD, generalized Cauchy distribution (GCD) and Cauchy are expressed in terms of SF and RP in Table \ref{tab:SF}. Note that, GGD becomes Laplacian and Gaussian when $\alpha=1.0$ and $\alpha=2.0$, and Cauchy is a special case of GCD with $k=2.0$.
 
 \begin{table*}
 	\begin{center}
@@ -95,7 +93,14 @@ According to (\ref{equ:SF}), typical zero-mean source distributions such as GGD,
 
 \subsection{DZ+UTQ/NURQ Scheme}
 
-The widely-used DZ+UTQ/NURQ scheme is illustrated in Fig. \ref{fig:DZ+UTQ_NURQ}, which consists of DZ+UTQ classification process and NURQ reconstruction process, both symmetric about zero \cite{Sullivan_VCIP2005}. In classification, each input signal is rounded to an integer quantization index according to its \emph{quantization interval} $I$, which is determined by the \emph{quantization threshold} $T$. Then in reconstruction, each quantization index is mapped to a \emph{reconstruction value} $R$. For the quantization index $k$, the corresponding $kth$ quantization interval $I_{k}$ of general DZ+UTQ/NURQ is denoted by:
+\begin{figure*}
+\centering
+\includegraphics[width = 1.0\linewidth]{Figures/section2/DZ+UTQ_NURQ}\\
+\caption{\label{fig:DZ+UTQ_NURQ}%
+Illustration of DZ+UTQ/NURQ Scheme.}
+\end{figure*}
+
+The widely-used DZ+UTQ/NURQ scheme is illustrated in Fig. \ref{fig:DZ+UTQ_NURQ}, which consists of DZ+UTQ classification process and NURQ reconstruction process, both symmetric about zero \cite{Sullivan_VCIP2005}. In the classification process, each input signal is rounded to an integer quantization index according to its \emph{quantization interval} $I$, which is determined by the \emph{quantization threshold} $T$. Then in the reconstruction process, the quantization index is mapped to a \emph{reconstruction value} $R$. For quantization index $k$, the corresponding $kth$ quantization interval $I_{k}$ of general DZ+UTQ/NURQ is denoted by:
 \begin{equation}
 \label{equ:interval}
 I_{k}=\left\{ \begin{array}{ll}
@@ -118,23 +123,17 @@ R_{k}=\left\{ \begin{array}{ll}
 -R_{-k},  & k \le -1
 \end{array}\right. ,
 \end{equation}
-where $z$ is half of the dead-zone size, and $f$ is the offset between the reconstruction value and the inner threshold of the quantization interval, both normalized by the quantization step size $s$. Almost all of quantizers in practice belong to this DZ+UTQ/NURQ scheme (for example, H.264/AVC video coding standard uses a uniform reconstruction quantizer which is a special case of DZ+UTQ/NURQ with $f=0$), therefore our work based on DZ+UTQ/NURQ is quite important and useful.
+where $z$ is half of the dead-zone size, and $f$ is the offset between the reconstruction value and the inner threshold of the quantization interval, both normalized by the quantization step size $s$.
 
-\begin{figure}[tp]
-\centering
-\includegraphics[width = 1.0\linewidth]{Figures/section2/DZ+UTQ_NURQ}\\
-\caption{\label{fig:DZ+UTQ_NURQ}%
-Illustration of DZ+UTQ/NURQ Scheme.}
-\vspace{5pt}
-\end{figure}
+Almost all quantizers in practice belong to this DZ+UTQ/NURQ scheme (for example, H.264/AVC video coding standard uses a uniform reconstruction quantizer which is a special case of DZ+UTQ/NURQ with $f=0$), therefore our work of R-D analysis based on DZ+UTQ/NURQ is quite important and useful.
 
 \subsection{Problem Formulation of R-D Analysis}
 
-Consider an input random variable $X$ of distribution $p(x)$ being quantized with the DZ+UTQ/NURQ scheme. After the DZ+UTQ classification process, the output entropy of the quantizer, which is also the bit rate required to encode the output values, can be denoted by the \emph{R-Q function} (RQF):
+Consider an input random variable $X$ with PDF $p(x)$ being quantized using the DZ+UTQ/NURQ scheme. After the DZ+UTQ classification process, the output entropy of the quantizer, which is also the bit rate required to encode the output values, can be denoted by the \emph{R-Q function} (RQF):
 \begin{equation}\label{equ:formula-rq}
 	R(z, s) = -\sum_{k=-\infty}^{+\infty} P_k \log_2 P_k ,
 \end{equation}
-where $P_k$ is the possibility of the output value being quantization index $k$, or equivalently, the input value lying in quantization interval $I_{k}$:
+where $P_k$ is the possibility of the output value being quantization index $k$, or equivalently, the input value lying in quantization interval $I_{k}$ (the range of values of k is herein assumed to be infinite only for convenience, which may not be true in practice):
 \begin{equation}\label{equ:formula-pk}
 	P_k = P\{X \in I_k\} =
 	\begin{cases}
@@ -150,7 +149,7 @@ where $P_k$ is the possibility of the output value being quantization index $k$,
 
 Likewise, after the NURQ reconstruction process, the distortion, using mean squared error (MSE) as criterion, can be denoted by the \emph{D-Q function} (DQF):
 \begin{equation}\label{equ:formula-dq}
-	D(z, s, f) =\sum_{i=-\infty}^{+\infty} E_k
+	D(z, s, f) =\sum_{k=-\infty}^{+\infty} E_k
 \end{equation}
 where $E_k$ is the reconstruction error generated in quantization interval $I_k$:
 \begin{equation}\label{equ:formula-dk}
@@ -165,16 +164,18 @@ where $E_k$ is the reconstruction error generated in quantization interval $I_k$
 	\end{cases}
 \end{equation}
 
-The RQF and DQF provide a way to calculate rate and distortion, and by combining the two, we can define a \emph{R-D function} $R=f(D)$, or its inverse $D=f(R)$, to represent the R-D relationship in source coding. However, for most source distributions, the sophisticated PDFs (e.g. the exponential form for GGD and power form for Cauchy) make it difficult or impossible to directly obtain the closed-form RQF and DQF from (\ref{equ:formula-rq}) - (\ref{equ:formula-dk}), not to mention deriving the accurate R-D function. In the following sections, we reveal the universal property and principles that does not require exact formula of PDF or R-D function, to assist the R-D analysis of various source distributions in real coding applications.
+The RQF and DQF provide a way to calculate rate and distortion, and by combining the two, we can define an \emph{R-D function} $R=f(D)$, or its inverse $D=f(R)$, to represent the relationship between the rate and distortion of a source under a quantizer (note that this operational R-D function is not exactly the same with that theoretical one defined by Shannon). However, for most source distributions, the sophisticated PDFs (e.g. the exponential form for GGD and power form for Cauchy) make it difficult or impossible to directly obtain the closed-form RQF and DQF from (\ref{equ:formula-rq}) - (\ref{equ:formula-dk}), not to mention deriving the accurate R-D function.
+
+In the following sections, we reveal the universal property and principles that does not require the exact expression of the PDF or R-D function, to assist the R-D analysis of various source distributions in real coding applications.
 
 \section{A Universal Property of R-D Function Under DZ+UTQ/NURQ}
 \label{sec:property}
 
-In this section, we try to investigate the property of R-D function from its derivate, bypassing the obstructing fact that the formula of R-D function for a non-trivial source distribution is generally not available. It is revealed that, for any source distribution that can be expressed as the product of a SF and the RP, the SF does not affect the derivative of its R-D function under the DZ+UTQ/NURQ scheme. We first give mathematical derivation and proof of this universal property, then validate it with the specific distribution of Cauchy by presenting some simulation results.
+In this section, we try to investigate the property of R-D function from its derivative, bypassing the obstructing fact that the formula of R-D function for a non-trivial source distribution is generally not available. It is revealed that, for any source distribution composed of a SF and the RP, the SF does not affect the derivative of its R-D function (with PSNR as distortion criteria). We first give mathematical derivation and proof of this universal property, then validate it with the specific Cauchy distribution by presenting some results of simulation experiments.
 
 \subsection{Derivation and Proof}
 
-For any given source distribution satisfying (\ref{equ:SF}), the original PDF $p(x)$ can be expressed as the product of a SF $c$ and RP $q(x)$. Then for quantization step size $s$, we can find a value $\delta$ such that $s=c \cdot \delta$. By replacing $p(x)$ with $1/c \cdot q(x/c)$ and $s$ with $c \cdot \delta$, the RQF and DQF can be expressed in a new form. First, for RQF, (\ref{equ:formula-pk}) can be rewritten as:
+For any source distribution satisfying (\ref{equ:SF}), and a quantization step size $s$, we can find a value $\delta$ such that $s=c \cdot \delta$. By replacing $p(x)$ with $\frac{1}{c} q(\frac{x}{c})$ and $s$ with $c \cdot \delta$, the RQF and DQF can be expressed in a new form. First, for RQF, (\ref{equ:formula-pk}) can be rewritten as:
 \begin{equation}\label{equ:formula-pknew}
 	P_k =
 	\begin{cases}
@@ -188,11 +189,10 @@ For any given source distribution satisfying (\ref{equ:SF}), the original PDF $p
 		& k \le -1 ,
 	\end{cases}
 \end{equation} 
-which is a function of $\delta$ and $z$. Substitute (\ref{equ:formula-pknew}) into (\ref{equ:formula-rq}), and the RQF also becomes a function of $\delta$ and $z$. Specifically, given the constant dead-zone ratio $z$, the rate is just a function of $\delta$: 
+where $P_k$ becomes a function of $\delta$ and $z$. Substitute (\ref{equ:formula-pknew}) into (\ref{equ:formula-rq}), and the RQF also becomes a function of $\delta$ and $z$. Specifically, given the constant dead-zone ratio $z$, the rate is just a function of $\delta$: 
 \begin{equation}\label{equ:formula-rqnew}
 	R = R_z(\delta).
 \end{equation}
-
 Similarly, for DQF, (\ref{equ:formula-dk}) can be rewritten as:  
 \begin{equation}\label{equ:formula-dknew}
 	E_k =
@@ -219,14 +219,16 @@ For convenience, we define $F_k$ as:
 		& k \le -1 .
 	\end{cases}
 \end{equation}
-Thus, we have $E_k = c^2 F_k$, where $F_k$ is only a function of $\delta, z$ and $f$, being irrelevant to $c$. Then according to (\ref{equ:formula-dq}), the distortion using MSE criteria is expressed as:
+Then we have $E_k = c^2 F_k$. Substitute it into (\ref{equ:formula-dq}), the distortion using MSE criteria is expressed as:
 \begin{equation}\label{equ:formula-dqnew}
 	D = c^2 \sum_{k=-\infty}^{+\infty} F_k, 
 \end{equation}
+where $F_k$ is a function of $\delta, z$ and $f$.
 
 In practice, another widely-used distortion criteria is peak signal-to-noise ratio (PSNR), defined as $\textrm{PSNR} = 10 \log_{10}\left(\frac{MAX^2}{D}\right)$, where $MAX$ is a constant (the maximum signal value), and $D$ is distortion using MSE criteria. We claim that, for R-D function in the form of $\textrm{PSNR}=f(R)$, its derivative, $\frac{\partial\textrm{PSNR}}{\partial R}$, is irrelevant to $c$. The proof is as follows.
 
 With the definition of PSNR and (\ref{equ:formula-dqnew}), we have:
+{\footnotesize
 \begin{eqnarray*}
 \frac{\partial\text{PSNR}}{\partial\delta}
 &=&\frac{\partial}{\partial\delta}10 \log_{10}\left(\frac{MAX^2}{D}\right)
@@ -235,13 +237,13 @@ With the definition of PSNR and (\ref{equ:formula-dqnew}), we have:
 \\&=&\frac{-10}{\ln{10}}\frac{1}{c^2 \sum_{k=-\infty}^{+\infty} F_k}\frac{\partial}{\partial\delta} \left(c^2 \sum_{k=-\infty}^{+\infty} F_k\right)
 \\&=&\frac{-10}{\ln{10}}\frac{1}{\sum_{k=-\infty}^{+\infty} F_k}\sum_{k=-\infty}^{+\infty} \frac{\partial F_k}{\partial\delta},
 \end{eqnarray*}
-where $c$ is eliminated in the reduction and only $F_k$ is left. According to (\ref{equ:formula-fk}), $F_k$ is irrelevant to $c$, therefore $\frac{\partial\textrm{PSNR}}{\partial\delta}$ is irrelevant to $c$. From (\ref{equ:formula-rqnew}), it's easy to know that $\frac{\partial\textrm{R}}{\partial\delta}$ is also irrelevant to $c$. Based on the derivative method for compound functions, we have $\frac{\partial\textrm{PSNR}}{\partial R} = \frac{\partial\textrm{PSNR}}{\partial\delta}/\frac{\partial R}{\partial\delta}$. Since $\frac{\partial\textrm{PSNR}}{\partial\delta}$ and $\frac{\partial\textrm{R}}{\partial\delta}$ are both irrelevant to $c$, $\frac{\partial\textrm{PSNR}}{\partial R}$ is proved to be irrelevant to $c$.
+}where $c$ is eliminated in the reduction and only $F_k$ is left. According to (\ref{equ:formula-fk}), $F_k$ is irrelevant to $c$, therefore $\frac{\partial\textrm{PSNR}}{\partial\delta}$ is irrelevant to $c$. From (\ref{equ:formula-rqnew}), it's easy to know that $\frac{\partial\textrm{R}}{\partial\delta}$ is also irrelevant to $c$. Based on the derivative method for compound functions, we have $\frac{\partial\textrm{PSNR}}{\partial R} = \frac{\partial\textrm{PSNR}}{\partial\delta}/\frac{\partial R}{\partial\delta}$. Since $\frac{\partial\textrm{PSNR}}{\partial\delta}$ and $\frac{\partial\textrm{R}}{\partial\delta}$ are both irrelevant to $c$, $\frac{\partial\textrm{PSNR}}{\partial R}$ is irrelevant to $c$ as well.
 
 \subsection{Validation}
 
-The irrelevance of SF to the derivative of PSNR-R function is a universal property applicable to any source distribution satisfying (\ref{equ:SF}), including GGD and Cauchy which are commonly-used to model real source signals. For GGD, in our previous work \cite{Sun_TCSVT2009}, the fact that its SF $\beta$ does not affect the derivative of PSNR-R function is confirmed via extensive experimental results. For Cauchy distribution, under DZ+UTQ/NURQ scheme, the curves of PSNR-R function and its derivative are drawn using simulated data and numerical methods, as illustrated in Fig. \ref{fig:RD_mu}. From Fig. \ref{fig:RD_mu}(a) and Fig. \ref{fig:RD_mu}(b) it can be seen that the PSNR-R curves corresponding to four SF values $\mu = 0.1, 0.2, 0.5, \; \textrm{and} \;0.8$ are of the same shape (parallel to each other); and Fig.\ref{fig:RD_mu}(c) and Fig. \ref{fig:RD_mu}(d) show that they have the same derivative.
+The irrelevance of SF to the derivative of PSNR-R function is a universal property applicable to any source distribution satisfying (\ref{equ:SF}), including GGD and Cauchy which are commonly-used to model real source signals. For GGD, in our previous work \cite{Sun_TCSVT2009}, the fact that its SF $\beta$ does not affect the derivative of PSNR-R function is confirmed via extensive experimental results. For Cauchy distribution, under DZ+UTQ/NURQ scheme, the curves of PSNR-R function and its derivative are drawn using simulated data and numerical methods, as illustrated in Fig. \ref{fig:RD_mu}. From Fig. \ref{fig:RD_mu}(a) and Fig. \ref{fig:RD_mu}(b) it can be seen that the PSNR-R curves corresponding to four SF values $\mu = 0.1, 0.2, 0.5, \; \textrm{and} \;0.8$ are of the same shape (parallel to each other); and Fig.\ref{fig:RD_mu}(c) and Fig. \ref{fig:RD_mu}(d) show that they have the identical derivative.
 
-Since the universal property holds true even when the distribution of the source cannot be clearly defined or all parameters of a distribution are not known, the complexity of R-D analysis in real coding applications can be properly reduced.
+Based on this universal property and other observations, reliable R-D relationship may be established for a source even when all parameters of its distribution are not certain or the distribution form is not known at all, thus the complexity of R-D modeling in real applications is reduced. A demonstration can be found in \cite{Sun_TCSVT2009}, where R-D models in video coding are constructed using heuristic approach on that basis.
 
 \begin{figure*}
 \begin{center}
@@ -260,23 +262,23 @@ Curves of PSNR-R function and its derivative for different $\mu$ of Cauchy distr
 \end{figure*}
 
 
-\section{Universal Principles of R-D Optimized Quantizer for Various Sources}
+\section{Universal Principles of Quantizer Design for Various Sources}
 \label{sec:principle}
 
-The necessary conditions for a scalar quantizer to achieve optimum R-D performance were formulated in \cite{Farvardin_TIT1984}. Specifically, under MSE criterion, Max \cite{Max_TIT1960} obtained the famous conclusion that, for each quantization index $k$, the reconstruction value $R_k$ should be located at the \emph{centroid} of the PDF $p(x)$ within quantization interval $I_k$. Thus, for the symmetric DZ+UTQ/NURQ scheme, the optimum design requires:
+The necessary conditions for a scalar quantizer to achieve optimum R-D performance (i.e., minimizes the average distortion with entropy constraint) were formulated in \cite{Farvardin_TIT1984}. Specifically, under MSE criterion, Max \cite{Max_TIT1960} obtained the famous condition that, for each quantization index $k$, the reconstruction value $R_k$ should be located at the \emph{centroid} of the area of PDF $p(x)$ within quantization interval $I_k$. Thus, for the symmetric DZ+UTQ/NURQ scheme, the optimum design requires:
 \begin{equation}\label{equ:formula-OptQuant}
-	{R_k}^* = \int_{(k-1+z)s}^{(k+z)s} xp(x)dx / \int_{(k-1+z)s}^{(k+z)s} p(x)dx, \quad k \ge 1
+	{R_k}^* = \int_{(k-1+z)s}^{(k+z)s} xp(x)dx / \int_{(k-1+z)s}^{(k+z)s} p(x)dx, \quad k \ge 1.
 \end{equation}
-(for $k \le 0$ the result and the derivation are similar, due to the symmetry).
+Due to the symmetry, we only consider the positive half without loss of generality.
 
-Based on (\ref{equ:formula-OptQuant}), we now deduce the necessary constraint on $z$ and $f$ for DZ+UTQ/NURQ design to achieve optimum R-D performance. Note that we assume nothing special about the source, except that it's zero-mean and the PDF $p(x)$ is monotonically non-increasing in positive axis, which is true for all source distributions of interest.
+Based on (\ref{equ:formula-OptQuant}), we now deduce the necessary constraint on $z$ and $f$ for DZ+UTQ/NURQ design to achieve optimum R-D performance. Note that we assume nothing special about the source, except that it's zero-mean and the PDF $p(x)$ is monotonically non-increasing in positive x-axis, which is true for all source distributions of interest.
 
-First of all, for the reconstruction value $R_k$ to be located within the quantization interval $I_k$ (the prerequisite of being located at the \emph{centroid}), according to (\ref{equ:interval}) and (\ref{equ:DZ+UTQ/NURQ}), the preliminary constraint on $z$ and $f$ can be obtained:
+First of all, the reconstruction value $R_k$ needs to be located within the quantization interval $I_k$ (the prerequisite of being located at the \emph{centroid}). Then with (\ref{equ:interval}) and (\ref{equ:DZ+UTQ/NURQ}), the preliminary constraint on $z$ and $f$ can be obtained:
 \begin{equation}\label{equ:formula-PreConstraint}
 	 T_k \le R_k < T_{k+1} \Rightarrow (k-1+z)s \le (k+f)s < (k+z)s \Rightarrow 0 < z - f \le1.
 \end{equation}
 
-Next, we further refine this constraint using (\ref{equ:formula-OptQuant}). Considering that $p(x) > 0$, and $p(x)$ is monotonically non-increasing in positive axis, for $0 < a < b$, it can be proved that (a proof is provided in the Appendix):
+Next, we further refine this constraint using (\ref{equ:formula-OptQuant}). Given that $p(x)$ is monotonically non-increasing in positive x-axis, and $p(x) > 0$, for $0 < a < b$, it can be proved that (a proof is provided in the Appendix):
 \begin{equation}\label{equ:formula-Inequity}
 	\int_a^b xp(x)dx \le \frac{a+b}{2} \int_a^b p(x)dx.
 \end{equation}
@@ -284,11 +286,11 @@ Let $a=(k-1+z)s$, $b=(k+z)s$. Then (\ref{equ:formula-Inequity}) becomes:
 \begin{equation}\label{equ:formula-Inequity1}
 	\int_{(k-1+z)s}^{(k+z)s} xp(x)dx \le (k+z-\frac{1}{2}) s \int_{(k-1+z)s}^{(k+z)s} p(x)dx, \quad k \ge 1.
 \end{equation}
-By integrating (\ref{equ:formula-OptQuant}) and (\ref{equ:formula-Inequity1}), it is clear that:
+By integrating (\ref{equ:formula-OptQuant}) and (\ref{equ:formula-Inequity1}), we obtain that:
 \begin{equation}\label{equ:formula-Inequity2}
 	{R_k}^* \le (k+z-\frac{1}{2})s, \quad k \ge 1.
 \end{equation}
-From (\ref{equ:DZ+UTQ/NURQ}) and (\ref{equ:formula-Inequity2}), we know that the optimum quantizer design requires $(k+f)s \le (k+z-\frac{1}{2})s$, implying $z-f \ge \frac{1}{2}$. Thus the preliminary constraint (\ref{equ:formula-PreConstraint}) can be refined to $\frac{1}{2} \le z-f \le 1$, also written as:
+From (\ref{equ:DZ+UTQ/NURQ}) and (\ref{equ:formula-Inequity2}), we know that the optimum quantizer design requires $(k+f)s \le (k+z-\frac{1}{2})s$, which is $z-f \ge \frac{1}{2}$. Thus the preliminary constraint (\ref{equ:formula-PreConstraint}) can be refined to $\frac{1}{2} \le z-f \le 1$, also written as:
 \begin{equation}\label{equ:formula-RefConstraint}
 	z = f+d, \quad \frac{1}{2} \le d \le 1,
 \end{equation}
@@ -311,13 +313,13 @@ R-D performance comparison of different $z-f$ values for DZ+UTQ/NURQ.}
 
 Guided by this universal principle, when selecting parameters of DZ+UTQ/NURQ for any source, one should first of all ensure that $z-f=d$ satisfies (\ref{equ:formula-RefConstraint}). Then for some particular sources, we continue to show that, the value $z-f$ can actually be used as a precise classifier for the quantizer performance.
 
-Consider the quantization interval $I_k$ ($k \ge 1$), where the reconstruction value $R_k$ divides it into two parts: $\overline{T_k R_k}$ and $\overline{R_k T_{k+1}}$. For some ``broad-tailed" or ``fat-tailed"$^1$\footnote{$^1$ https://en.wikipedia.org/wiki/Fat-tailed\_distribution} distributions, e.g., some members of the Cauchy family \cite{Farvardin_TIT1984}, in quantization intervals other than the dead-zone, the PDF can be precisely approximated with a straight line. If this is true, then whether $R_k$ is at the centroid of PDF in $I_k$, or equivalently, whether the quantizer has optimum performance, would be determined exclusively by the ratio $\overline{T_k R_k} / \overline{R_k T_{k+1}}$, which therefore can serve as a measurement for the performance of the quantizer. In other words, if two DZ+UTQ/NURQ designs ($z_1, f_1$) and ($z_2, f_2$) result in the same value of $\overline{T_k R_k} / \overline{R_k T_{k+1}}$, their R-D performance would also be the same. According to (\ref{equ:DZ+UTQ/NURQ}), the value of $\overline{T_k R_k} / \overline{R_k T_{k+1}}$ being the same implies that:
+Consider the quantization interval $I_k$ ($k \ge 1$), where the reconstruction value $R_k$ divides it into two parts: $\overline{T_k R_k}$ and $\overline{R_k T_{k+1}}$. For some ``broad-tailed" or ``fat-tailed"$^1$\footnote{$^1$ https://en.wikipedia.org/wiki/Fat-tailed\_distribution} distributions, e.g., some members of the Cauchy family \cite{Farvardin_TIT1984}, in quantization intervals other than the dead-zone, the PDF can be precisely approximated with a straight line. For a straight line PDF, whether $R_k$ is at the centroid of the area in $I_k$, or equivalently, whether the quantizer has optimum performance, would be determined exclusively by the ratio $\overline{T_k R_k} / \overline{R_k T_{k+1}}$, which therefore can serve as a measurement for the performance of the quantizer. In other words, if two DZ+UTQ/NURQ designs ($z_1, f_1$) and ($z_2, f_2$) result in the same value of $\overline{T_k R_k} / \overline{R_k T_{k+1}}$, their R-D performance would also be the same. According to (\ref{equ:DZ+UTQ/NURQ}), the value of $\overline{T_k R_k} / \overline{R_k T_{k+1}}$ being the same implies that:
 \begin{equation}\label{equ:formula-ratio}
 \frac{(k+f_1)-(k-1+z_1)}{(k+z_1)-(k+f_1)} = \frac{(k+f_2)-(k-1+z_2)}{(k+z_2)-(k+f_2)},
 \end{equation}
 which can be reduced to $z_1 - f_1 = z_2 - f_2$. Reasoning back, we can obtain that: the performance of the quantizer design ($z_1, f_1$) is the same with the quantizer design ($z_2, f_2$), as long as $z_1 - f_1 = z_2 - f_2$, regardless of the specific values of the parameters.
 
-Although not as universal as the previous one, this principle still applies to a large class of sources with ``broad-tailed" distributions. Validation for Cauchy distribution with $\mu = 0.5$ is provided in Fig. \ref{fig:RD_same_pattern}, where R-D performance comparison of different DZ+UTQ/NURQ designs with the identical $z-f$ value is shown. It is observed that, under each $z-f$ value, all the PSNR-R curves are overlapped, indicating the same R-D performance.
+Although not as universal as the previous one, this principle still applies to a large class of sources with ``broad-tailed" distributions. Simulation validation for Cauchy distribution with $\mu = 0.5$ is provided in Fig. \ref{fig:RD_same_pattern}, where R-D performance comparison of different DZ+UTQ/NURQ designs with the identical $z-f$ value is shown. It is observed that, for the same $z-f$ value, all the PSNR-R curves are overlapped, indicating the same R-D performance regardless of the specific $z$, $f$ values.
 
 \begin{figure*}
 \begin{center}
@@ -332,17 +334,19 @@ Although not as universal as the previous one, this principle still applies to a
 R-D performance comparison of different quantizer designs with identical $z-f$ value for Cauchy $\mu=0.5$.}
 \end{figure*}
 
-The two principles provide a convenient way to simplify R-D performance analysis of various source distributions and guide the parameter selection for practical quantizers. Benefiting from them, the reason why the DZ+UTQ/NURQ designs applied in video/image coding standards (e.g. in H.264/AVC, $z$ is set to $2/3$ in intra coding and $5/6$ in inter coding, $f$ is set to $0$ \cite{Sullivan_VCIP2005}) are effective can now be clearly seen.
+The two principles provide a convenient way to simplify R-D performance analysis and guide the practical quantizer design for various source distributions. Benefiting from them, the reason why the DZ+UTQ/NURQ designs applied in video/image coding standards (e.g. in H.264/AVC, $z$ is set to $2/3$ in intra coding and $5/6$ in inter coding, $f$ is set to $0$ \cite{Sullivan_VCIP2005}) are effective can now be clearly seen.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this paper, universal property and principles that apply to various source distributions are revealed and validated. First, for any source distribution that can be expressed as the product of a Scaling Factor (SF) and the remaining part, SF does not affect the derivative of its R-D function. Second, for the DZ+UTQ/NURQ scheme to achieve optimum R-D performance, its parameters should satisfy the necessary constraint of $\frac{1}{2} \le z - f \le 1$, and $z - f$ is also a precise performance classifier for sources of certain distributions. These results can provide insights and assistance in R-D modeling and quantizer design for real coding applications, where the source distribution may be complex and uncertain.
+In this paper, universal property and principles that apply to various source distributions are revealed and validated. First, for any source distribution composed of a scaling factor and the remaining part, the scaling factor does not affect the derivative of its R-D function (with PSNR as distortion criteria). Second, for the DZ+UTQ/NURQ scheme to achieve optimum R-D performance, its parameters should satisfy the necessary constraint of $\frac{1}{2} \le z - f \le 1$, and $z - f$ is also a precise performance classifier for source distributions of particular forms. These results can provide insights and assistance in R-D modeling and quantizer design for real coding applications, where the source distribution may be complex and uncertain.
+
+Verification for other distributions and with actual data still needs to be done, and an effort will also be made to use these universal conclusions in practice.
 
 \section*{Appendix}
 \label{sec:appendix}
 
-In this appendix, we prove $\int_a^b xp(x)dx \le \frac{a+b}{2} \int_a^b p(x)dx$, given that $0 < a < b$, $p(x) > 0$, and $p(x)$ is monotonically non-increasing in positive axis.
+In this appendix, we prove $\int_a^b xp(x)dx \le \frac{a+b}{2} \int_a^b p(x)dx$, given that $p(x)$ is monotonically non-increasing in positive x-axis, $p(x) > 0$, and $0 < a < b$.
 
 Let $F(t) = \int_a^t xp(x)dx - \frac{a+t}{2} \int_a^t p(x)dx, t \in [a, b]$. Then $F^{\prime}(t) = tp(t) - [\frac{1}{2}\int_a^t p(x)dx + \frac{a+t}{2}p(t)] = \frac{t-a}{2}p(t) - \frac{1}{2}\int_a^t p(x)dx = \frac{1}{2}\int_a^t p(t)-p(x)dx $. Since $p(x)$ is monotonically non-increasing, for $x \in [a, t]$ we have $p(t) \le p(x)$, which implies $F^{\prime}(t) \le 0$. Therefore $F(t)$ is also monotonically non-increasing. Then with $b > a$, we obtain $F(b) \le F(a)$, which is $\int_a^b xp(x)dx - \frac{a+b}{2} \int_a^b p(x)dx \le 0$, i.e., $\int_a^b xp(x)dx \le \frac{a+b}{2} \int_a^b p(x)dx$. $\square$
 
