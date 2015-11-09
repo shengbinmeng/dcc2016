@@ -58,7 +58,7 @@ On one hand, to evaluate the best attainable R-D performance, different types of
 
 In this paper, instead of focusing on the R-D analysis of a specific source distribution, we try to reveal the common rules existing for a variety of different source distributions. The main contribution of this study is to provide insights and assistance in R-D modeling and quantizer design for real coding applications, where the source distribution may be complex and uncertain. First, it is revealed that, for any source distribution that can be expressed as the product of a Scaling Factor (SF) and the remaining part, SF does not affect the derivative of its R-D function. This universal property can properly reduce the complexity of the R-D modeling problem. Second, universal principles for the widely-used DZ+UTQ/NURQ scheme to achieve optimum R-D performance are deduced regardless of the source distribution form, which can be used to conveniently guide the parameter selection of practical quantizer design. The property and principles are validated with the Cauchy distribution, and are also consistent with existing conclusions of other distributions.
 
-The rest of this paper is organized as follows. In Section \ref{sec:background}, the background knowledge of our analysis is briefly introduced. On this basis, Section \ref{sec:property} and Section \ref{sec:principle} respectively discusses the general R-D properties and quantizer design principles that apply to various source distributions, with both mathematical derivation and simulated validation. Finally, concluding remarks are given in Section \ref{sec:conclusion}.
+The rest of this paper is organized as follows. In Section \ref{sec:background}, the background knowledge of our analysis is briefly introduced. On this basis, Section \ref{sec:property} and Section \ref{sec:principle} respectively discusses the universal R-D property and quantizer design principles that apply to various source distributions, with both mathematical derivation and simulated validation. Finally, concluding remarks are given in Section \ref{sec:conclusion}.
 
 \section{Background Knowledge}
 \label{sec:background}
@@ -277,11 +277,11 @@ First of all, for the reconstruction value $R_k$ to be located within the quanti
 	 T_k \le R_k < T_{k+1} \Rightarrow (k-1+z)s \le (k+f)s < (k+z)s \Rightarrow 0 < z - f \le1.
 \end{equation}
 
-Next, we refine the constraint using (\ref{equ:formula-OptQuant}). Considering that $p(x) > 0$, and $p(x)$ is monotonically non-increasing in positive axis, for $0 < a < b$, it can be proved that:
+Next, we refine the constraint using (\ref{equ:formula-OptQuant}). Considering that $p(x) > 0$, and $p(x)$ is monotonically non-increasing in positive axis, for $0 < a < b$, it can be proved that (a proof is provided in the Appendix):
 \begin{equation}\label{equ:formula-Inequity}
 	\int_a^b xp(x)dx \le \frac{a+b}{2} \int_a^b p(x)dx.
 \end{equation}
-Let $a=(k-1+z)s$, $b=(k+z)s$, we have:
+Let $a=(k-1+z)s$, $b=(k+z)s$. Then (\ref{equ:formula-Inequity}) becomes:
 \begin{equation}\label{equ:formula-Inequity1}
 	\int_{(k-1+z)s}^{(k+z)s} xp(x)dx \le (k+z-\frac{1}{2}) s \int_{(k-1+z)s}^{(k+z)s} p(x)dx, \quad k \ge 1.
 \end{equation}
@@ -300,7 +300,7 @@ which is the the necessary constraint for DZ+UTQ/NURQ design to be optimum.
 \begin{tabular}{cc}
 \includegraphics[width = 0.5\linewidth]{Figures/section4/RD_Cauchy_mu=0_5_z=p+0_67} &
 \includegraphics[width = 0.5\linewidth]{Figures/section4/RD_Cauchy_mu=0_5_z=p+0_83} \\
-{\small (a) $z=p+2/3$} & {\small (b) $z=p+5/6$} 
+{\small (a) $z=f+2/3$} & {\small (b) $z=f+5/6$} 
 \end{tabular}
 \end{center}
 \vspace{-20pt}
@@ -341,6 +341,20 @@ In sum, the constraints (\ref{equ:formula-PreConstraint}), (\ref{equ:formula-Ref
 \label{sec:conclusion}
 
 In this paper, universal property and principles that apply to various source distributions are revealed and validated. First, for any source distribution that can be expressed as the product of a Scaling Factor (SF) and the remaining part, SF does not affect the derivative of its R-D function. Second, for the DZ+UTQ/NURQ scheme to achieve optimum R-D performance, its parameters should satisfy the necessary constraint of $\frac{1}{2} \le z - f \le 1$, and $z - f$ is also a precise performance classifier for some source of heavy-tailed distribution. These results can provide insights and assistance in R-D modeling and quantizer design for real coding applications, where the source distribution may be complex and uncertain.
+
+\section*{Appendix}
+\label{sec:appendix}
+
+In this appendix, we prove $\int_a^b xp(x)dx \le \frac{a+b}{2} \int_a^b p(x)dx$ when $p(x)$ is monotonically non-increasing in positive axis, $p(x) > 0$, and $0 < a < b$.
+
+Let $F(t) = \int_a^t xp(x)dx - \frac{a+t}{2} \int_a^t p(x)dx, t \in [a, b]$. Then $F^{\prime}(t) = tp(t) - [\frac{1}{2}\int_a^t p(x)dx + \frac{a+t}{2}p(t)] = \frac{t-a}{2}p(t) - \frac{1}{2}\int_a^t p(x)dx = \frac{1}{2}\int_a^t p(t)-p(x)dx $. Since $p(x)$ is monotonically non-increasing, for $x \in [a, t]$ we have $p(t) \le p(x)$, which implies $F^{\prime}(t) \le 0$. Therefore $F(t)$ is also monotonically non-increasing. Then from $b > a$, we obtain $F(b) \le F(a)$, which is $\int_a^b xp(x)dx - \frac{a+b}{2} \int_a^b p(x)dx \le 0$, thus the result.
+
+% It's prettier with more space.
+\iffalse
+\begin{eqnarray*}
+F^{\prime}(t) &=& tp(t) - [\frac{1}{2}\int_a^t p(x)dx + \frac{a+t}{2}p(t)]\\&=& \frac{t-a}{2}p(t) - \frac{1}{2}\int_a^t p(x)dx \\&=& \frac{1}{2}\int_a^t p(t)-p(x)dx
+\end{eqnarray*}
+\fi
 
 \section*{References}
 \bibliographystyle{IEEEtran}
