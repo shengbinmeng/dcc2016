@@ -1,12 +1,13 @@
 Academic paper for DCC 2016.
 
 Files:
-- dccpaper.cls: LaTeX class file
-- IEEEbib.bst: BiBTeX style file with bibliography style definitions
-- dcc2016.tex: the paper in LaTeX
-- refs.bib: file of bibliographic references
-- Figures/：folder for image files
-- Makefile: provides for automatic LaTeX compilation and PDF generation
+
+  - dccpaper.cls: LaTeX class file
+  - IEEEbib.bst: BiBTeX style file with bibliography style definitions
+  - dcc2016.tex: the paper in LaTeX
+  - refs.bib: file of bibliographic references
+  - Figures/：folder for image files
+  - Makefile: provides for automatic LaTeX compilation and PDF generation
 
 It is recommended to use the included Makefile to produce the PDF document to
 submit to the conference:
